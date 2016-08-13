@@ -1,0 +1,41 @@
+= Challengeland Real4
+
+
+
+Ok, so first we do a little bit of recon to our victim, we can see there is a form with user- pass fields so we go in and see what happen.
+
+image::https://github.com/palaxi0/palaxi0.github.io/blob/gh-pages/images/1.JPG?raw=true[]
+	Interesting
+
+image::https://github.com/palaxi0/palaxi0.github.io/blob/gh-pages/images/1,1.JPG?raw=true[]
+ Ok so now we know that this page /panel.php is the one making the comparison of whatever is going on at the backend and our fulled fields. Lets check out the "Contact with admin" link and see what we get.
+
+image::https://github.com/palaxi0/palaxi0.github.io/blob/gh-pages/images/2.JPG?raw=true[]
+ Now we have 2 texfields to "write an admin", lets try to see what will happen if we contact him with something.
+
+image::https://github.com/palaxi0/palaxi0.github.io/blob/gh-pages/images/3.JPG?raw=true[]
+Interesting, so here is where it gets a little bit tricky. At the URL you can crealy see what the message was and the email and we see a response, that means we have something there. Let's see what is going on here by taking a look to our cookies at jvascript console. That means 2 things: 
+ 1. We are allowed to use javascript here because is enable.
+ 2. Some cookies are involved in all this procedure and we know now that the name of the cookie is "auth". So lets look for the value we need to "login as admin" as the challenge said.
+
+image::https://github.com/palaxi0/palaxi0.github.io/blob/gh-pages/images/4.JPG?raw=true[]
+ If your are not familiar with XSS this will be your first approach. Imagine that you can execute javascript commans by submitting them at the forms with properly sintax as <script></script> like a HTML DOC when you're writing a script on your front-end page. So now that's what we are going to do, but first we need to check our cookies like we said before, for this you can use any cookie manager add-on, plugin, extension from your navigator web store. Open it and see that the cookie we identified earlier is there and its value is guest mmmmm.
+
+image::https://github.com/palaxi0/palaxi0.github.io/blob/gh-pages/images/5.JPG?raw=true[]
+ Here is where it get's intersting so we will do a little XSS to the form, injecting some javascript code with the document.cookie comand we saw a few steps before. Let's see what we get.
+
+image::https://github.com/palaxi0/palaxi0.github.io/blob/gh-pages/images/6.JPG?raw=true[]
+ So here it is. The cookie value we are looking for. That´s the one we need so save it for later.
+
+image::https://github.com/palaxi0/palaxi0.github.io/blob/gh-pages/images/7.JPG?raw=true[]
+ Lets go back to our /panel.php page, yes the one after the login, doesn't matter what you put in the login becasue we are not interested in that. The page says the same it did before but once again lets check our cookie manager extension so you can properly see what is going on with the cookie. We are still being recognized as "guest", but guess what, we can change the cookie value for the one we got when we did the XSS attack. 
+
+image::https://github.com/palaxi0/palaxi0.github.io/blob/gh-pages/images/8.JPG?raw=true[]
+ Change the value of the cookie so the page not longer recognize use as guest but as something else.
+
+image::https://github.com/palaxi0/palaxi0.github.io/blob/gh-pages/images/9.JPG?raw=true[]
+ Now its just save the edited cookie and refresh the page.
+
+image::https://github.com/palaxi0/palaxi0.github.io/blob/gh-pages/images/10.JPG?raw=true[]
+ There you go. Here's you KEY!!!!!!
+
